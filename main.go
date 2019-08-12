@@ -10,8 +10,8 @@ func main() {
 	var err error
 	bytes, _ := ioutil.ReadFile("/dev/stdin")
 	var input string = string(bytes)
-	var number int
-	number, err = strconv.Atoi(input)
+
+	number, err := strconv.Atoi(input)
 	if err != nil {
 		panic(err)
 	}
