@@ -92,14 +92,18 @@ func getToken() *Token {
 	return token
 }
 
-func parse() *Node {
+func parseUnaryExpr() *Node {
 	token := getToken()
-
 	intval, _ := strconv.Atoi(token.Value)
 	node := &Node{
 		Type: "intliteral",
 		intval: intval,
 	}
+	return node
+}
+
+func parseExpr() *Node {
+	node := parseUnaryExpr()
 	return node
 }
 
@@ -117,6 +121,6 @@ func generateCode(node *Node) {
 func main() {
 	bytes, _ = ioutil.ReadFile("/dev/stdin")
 	tokens = tokenize()
-	node := parse()
+	node := parseExpr()
 	generateCode(node)
 }
