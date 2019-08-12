@@ -80,6 +80,9 @@ func main() {
 	tokens := tokenize()
 
 	token := tokens[0]
+	if token.Type != "numberliteral" {
+		panic("Unexpected token: " + token.Value)
+	}
 	number, err := strconv.Atoi(token.Value)
 	if err != nil {
 		panic(err)
