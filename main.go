@@ -9,7 +9,7 @@ import (
 
 type Token struct {
 	Type  string // "numberliteral"
-	Value string
+	value string
 }
 
 var source []byte
@@ -55,13 +55,13 @@ func tokenize() []*Token {
 			}
 			token := &Token{
 				Type:  "numberliteral",
-				Value: string(number),
+				value: string(number),
 			}
 			tokens = append(tokens, token)
 		case ';', '+', '-':
 			token := &Token{
 				Type:  "punctuation",
-				Value: string([]byte{char}),
+				value: string([]byte{char}),
 			}
 			tokens = append(tokens, token)
 		default:
@@ -98,7 +98,7 @@ func getToken() *Token {
 func parseUnaryExpr() *Node {
 	token := getToken()
 	if token.Type == "numberliteral" {
-		intval, _ := strconv.Atoi(token.Value)
+		intval, _ := strconv.Atoi(token.value)
 		return &Node{
 			Type:   "intliteral",
 			intval: intval,
@@ -107,7 +107,7 @@ func parseUnaryExpr() *Node {
 		operand := parseUnaryExpr()
 		return &Node{
 			Type:     "unary",
-			operator: token.Value,
+			operator: token.value,
 			operand:  operand,
 		}
 	}
@@ -120,16 +120,16 @@ func parseExpr() *Node {
 
 	for {
 		tok := getToken()
-		if tok == nil || tok.Value == ";" {
+		if tok == nil || tok.value == ";" {
 			return node
 		}
 
-		if tok.Value == "+" || tok.Value == "-" {
+		if tok.value == "+" || tok.value == "-" {
 			left := node
 			right := parseUnaryExpr()
 			return &Node{
 				Type:     "binary",
-				operator: tok.Value,
+				operator: tok.value,
 				left:     left,
 				right:    right,
 			}
