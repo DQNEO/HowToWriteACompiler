@@ -82,7 +82,9 @@ type Node struct {
 	Type string // "intliteral", "unary"
 	intval int
 	operator string
-	operand *Node
+	operand *Node // for unary
+	left *Node // for binary
+	right *Node // for binary
 }
 
 func getToken() *Token {
@@ -116,6 +118,26 @@ func parseUnaryExpr() *Node {
 
 func parseExpr() *Node {
 	node := parseUnaryExpr()
+
+	for {
+		tok := getToken()
+		if tok == nil || tok.Value == ";" {
+			return node
+		}
+
+		if tok.Value == "+" || tok.Value == "-" {
+			left := node
+			right := parseUnaryExpr()
+			return &Node{
+				Type: "binary",
+				operator: tok.Value,
+				left: left,
+				right: right,
+			}
+		}
+	}
+
+
 	return node
 }
 
@@ -128,6 +150,17 @@ func generateExpression(node *Node) {
 		} else {
 			fmt.Printf("  movq $%d, %%rax # %s\n", node.operand.intval, node.operand.Type)
 		}
+	} else if node.Type == "binary" {
+		fmt.Printf("  movq $%d, %%rax # %s\n", node.left.intval, node.left.Type)
+		fmt.Printf("  movq $%d, %%rbx # %s\n", node.right.intval, node.right.Type)
+		if node.operator == "+" {
+			fmt.Printf("  addq %%rbx, %%rax\n")
+		} else if node.operator == "-" {
+			fmt.Printf("  subq %%rbx, %%rax\n")
+		} else {
+			panic("generator: unknown operator:" + node.operator)
+		}
+
 	} else {
 		panic("generator: unknown node type:" + node.Type)
 	}
