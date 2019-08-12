@@ -12,20 +12,20 @@ type Token struct {
 	Value string
 }
 
-var bytes []byte
-var byteIndex = 0
+var source []byte
+var sourceIndex = 0
 
 func getchar() (byte, error) {
-	if len(bytes) == byteIndex {
+	if len(source) == sourceIndex {
 		return 0, errors.New("EOF")
 	}
-	char := bytes[byteIndex]
-	byteIndex++
+	char := source[sourceIndex]
+	sourceIndex++
 	return char, nil
 }
 
 func ungethar() {
-	byteIndex--
+	sourceIndex--
 }
 
 func tokenize() []*Token {
@@ -173,7 +173,7 @@ func generateCode(node *Node) {
 }
 
 func main() {
-	bytes, _ = ioutil.ReadFile("/dev/stdin")
+	source, _ = ioutil.ReadFile("/dev/stdin")
 	tokens = tokenize()
 	node := parseExpr()
 	generateCode(node)
