@@ -8,7 +8,7 @@ import (
 )
 
 type Token struct {
-	Type  string // "numberliteral"
+	Type  string // "intliteral"
 	value string
 }
 
@@ -54,7 +54,7 @@ func tokenize() []*Token {
 				}
 			}
 			token := &Token{
-				Type:  "numberliteral",
+				Type:  "intliteral",
 				value: string(number),
 			}
 			tokens = append(tokens, token)
@@ -97,7 +97,7 @@ func getToken() *Token {
 
 func parseUnaryExpr() *Node {
 	token := getToken()
-	if token.Type == "numberliteral" {
+	if token.Type == "intliteral" {
 		intval, _ := strconv.Atoi(token.value)
 		return &Node{
 			Type:   "intliteral",
