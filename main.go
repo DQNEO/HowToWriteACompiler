@@ -8,7 +8,7 @@ import (
 )
 
 type Token struct {
-	Type  string // "intliteral"
+	kind  string // "intliteral"
 	value string
 }
 
@@ -54,13 +54,13 @@ func tokenize() []*Token {
 				}
 			}
 			token := &Token{
-				Type:  "intliteral",
+				kind:  "intliteral",
 				value: string(number),
 			}
 			tokens = append(tokens, token)
 		case ';', '+', '-':
 			token := &Token{
-				Type:  "punctuation",
+				kind:  "punctuation",
 				value: string([]byte{char}),
 			}
 			tokens = append(tokens, token)
@@ -78,7 +78,7 @@ var tokenIndex int = 0
 
 // Node is an expression
 type Node struct {
-	Type     string // "intliteral", "unary"
+	kind     string // "intliteral", "unary"
 	intval   int
 	operator string
 	operand  *Node // for unary
@@ -97,16 +97,16 @@ func getToken() *Token {
 
 func parseUnaryExpr() *Node {
 	token := getToken()
-	if token.Type == "intliteral" {
+	if token.kind == "intliteral" {
 		intval, _ := strconv.Atoi(token.value)
 		return &Node{
-			Type:   "intliteral",
+			kind:   "intliteral",
 			intval: intval,
 		}
-	} else if token.Type == "punctuation" {
+	} else if token.kind == "punctuation" {
 		operand := parseUnaryExpr()
 		return &Node{
-			Type:     "unary",
+			kind:     "unary",
 			operator: token.value,
 			operand:  operand,
 		}
@@ -128,7 +128,7 @@ func parseExpr() *Node {
 			left := node
 			right := parseUnaryExpr()
 			return &Node{
-				Type:     "binary",
+				kind:     "binary",
 				operator: tok.value,
 				left:     left,
 				right:    right,
@@ -140,18 +140,18 @@ func parseExpr() *Node {
 }
 
 func generateExpression(node *Node) {
-	switch node.Type {
+	switch node.kind {
 	case "intliteral":
-		fmt.Printf("  movq $%d, %%rax # %s\n", node.intval, node.Type)
+		fmt.Printf("  movq $%d, %%rax # %s\n", node.intval, node.kind)
 	case "unary":
 		if node.operator == "-" {
-			fmt.Printf("  movq $-%d, %%rax # %s\n", node.operand.intval, node.operand.Type)
+			fmt.Printf("  movq $-%d, %%rax # %s\n", node.operand.intval, node.operand.kind)
 		} else {
-			fmt.Printf("  movq $%d, %%rax # %s\n", node.operand.intval, node.operand.Type)
+			fmt.Printf("  movq $%d, %%rax # %s\n", node.operand.intval, node.operand.kind)
 		}
 	case "binary":
-		fmt.Printf("  movq $%d, %%rax # %s\n", node.left.intval, node.left.Type)
-		fmt.Printf("  movq $%d, %%rbx # %s\n", node.right.intval, node.right.Type)
+		fmt.Printf("  movq $%d, %%rax # %s\n", node.left.intval, node.left.kind)
+		fmt.Printf("  movq $%d, %%rbx # %s\n", node.right.intval, node.right.kind)
 		switch node.operator {
 		case "+":
 			fmt.Printf("  addq %%rbx, %%rax\n")
@@ -161,7 +161,7 @@ func generateExpression(node *Node) {
 			panic("generator: unknown operator:" + node.operator)
 		}
 	default:
-		panic("generator: unknown node type:" + node.Type)
+		panic("generator: unknown node type:" + node.kind)
 	}
 }
 
