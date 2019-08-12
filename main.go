@@ -75,6 +75,7 @@ func tokenize() []*Token {
 
 var bytes []byte
 var tokens []*Token
+var tokenIndex int = 0
 
 // Node is an expression
 type Node struct {
@@ -82,8 +83,17 @@ type Node struct {
 	intval int
 }
 
+func getToken() *Token {
+	if tokenIndex >= len(tokens ) {
+		return nil
+	}
+	token := tokens[tokenIndex]
+	tokenIndex++
+	return token
+}
+
 func parse() *Node {
-	token := tokens[0]
+	token := getToken()
 
 	intval, _ := strconv.Atoi(token.Value)
 	node := &Node{
