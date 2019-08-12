@@ -142,26 +142,27 @@ func parseExpr() *Node {
 }
 
 func generateExpression(node *Node) {
-	if node.Type == "intliteral" {
+	switch node.Type {
+	case "intliteral":
 		fmt.Printf("  movq $%d, %%rax # %s\n", node.intval, node.Type)
-	} else if node.Type == "unary" {
+	case "unary":
 		if node.operator == "-" {
 			fmt.Printf("  movq $-%d, %%rax # %s\n", node.operand.intval, node.operand.Type)
 		} else {
 			fmt.Printf("  movq $%d, %%rax # %s\n", node.operand.intval, node.operand.Type)
 		}
-	} else if node.Type == "binary" {
+	case "binary":
 		fmt.Printf("  movq $%d, %%rax # %s\n", node.left.intval, node.left.Type)
 		fmt.Printf("  movq $%d, %%rbx # %s\n", node.right.intval, node.right.Type)
-		if node.operator == "+" {
+		switch node.operator {
+		case "+":
 			fmt.Printf("  addq %%rbx, %%rax\n")
-		} else if node.operator == "-" {
+		case "-":
 			fmt.Printf("  subq %%rbx, %%rax\n")
-		} else {
+		default:
 			panic("generator: unknown operator:" + node.operator)
 		}
-
-	} else {
+	default:
 		panic("generator: unknown node type:" + node.Type)
 	}
 }
