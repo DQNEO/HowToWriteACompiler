@@ -74,6 +74,7 @@ func tokenize() []*Token {
 }
 
 var bytes []byte
+var tokens []*Token
 
 // Node is an expression
 type Node struct {
@@ -81,9 +82,10 @@ type Node struct {
 	intval int
 }
 
+
 func main() {
 	bytes, _ = ioutil.ReadFile("/dev/stdin")
-	tokens := tokenize()
+	tokens = tokenize()
 
 	token := tokens[0]
 
