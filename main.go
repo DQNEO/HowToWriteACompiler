@@ -93,10 +93,14 @@ func parse() *Node {
 	return node
 }
 
-func generate(node *Node) {
+func generateExpression(node *Node) {
+	fmt.Printf("  movq $%d, %%rax # %s\n", node.intval, node.Type)
+}
+
+func generateCode(node *Node) {
 	fmt.Printf(" .global main\n")
 	fmt.Printf("main:\n")
-	fmt.Printf("  movq $%d, %%rax # %s\n", node.intval, node.Type)
+	generateExpression(node)
 	fmt.Printf("  ret\n")
 }
 
@@ -104,5 +108,5 @@ func main() {
 	bytes, _ = ioutil.ReadFile("/dev/stdin")
 	tokens = tokenize()
 	node := parse()
-	generate(node)
+	generateCode(node)
 }
