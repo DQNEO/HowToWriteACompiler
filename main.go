@@ -167,7 +167,7 @@ func generateExpression(node *Node) {
 }
 
 func generateCode(node *Node) {
-	fmt.Printf(" .global main\n")
+	fmt.Printf("  .global main\n")
 	fmt.Printf("main:\n")
 	generateExpression(node)
 	fmt.Printf("  ret\n")
