@@ -6,12 +6,34 @@ import (
 	"io/ioutil"
 	)
 
+type Token struct {
+	Type string // "numberliteral"
+	Value string
+}
+
+func tokenize(bytes []byte) []*Token {
+	var tokens []*Token
+
+	var token *Token
+	char := bytes[0]
+	if '0' <= char && char <= '9' {
+		token = &Token{
+			Type:"numberliteral",
+			Value: string(bytes),
+		}
+	}
+
+	tokens = append(tokens, token)
+	return tokens
+}
+
 func main() {
 	var err error
 	bytes, _ := ioutil.ReadFile("/dev/stdin")
-	var input string = string(bytes)
+	tokens := tokenize(bytes)
 
-	number, err := strconv.Atoi(input)
+	token := tokens[0]
+	number, err := strconv.Atoi(token.Value)
 	if err != nil {
 		panic(err)
 	}
