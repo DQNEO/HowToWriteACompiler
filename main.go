@@ -55,14 +55,14 @@ func tokenize() []*Token {
 				Value: string(number),
 			}
 			tokens = append(tokens, token)
+		case ' ', '\t','\n':
+			continue
 		case ';','+','-':
 			token := &Token{
 				Type:"punctuation",
 				Value: string([]byte{char}),
 			}
 			tokens = append(tokens, token)
-		case ' ', '\t','\n':
-			continue
 		default:
 			panic(fmt.Sprintf("Invalid char: %c", char))
 		}
