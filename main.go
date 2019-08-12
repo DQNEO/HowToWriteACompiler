@@ -63,6 +63,8 @@ func tokenize() []*Token {
 				Value: string([]byte{char}),
 			}
 			tokens = append(tokens, token)
+		default:
+			panic(fmt.Sprintf("Invalid char: %c", char))
 		}
 
 	}
