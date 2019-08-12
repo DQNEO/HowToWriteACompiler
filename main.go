@@ -55,6 +55,8 @@ func tokenize() []*Token {
 				Value: string(number),
 			}
 			tokens = append(tokens, token)
+		case ' ', '\t','\n':
+			continue
 		}
 
 	}
