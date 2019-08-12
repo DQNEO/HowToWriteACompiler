@@ -83,10 +83,7 @@ type Expr struct {
 	intval int    // for intliteral
 }
 
-func main() {
-	source, _ = ioutil.ReadFile("/dev/stdin")
-	tokens = tokenize()
-
+func parse() *Expr {
 	token := tokens[0]
 
 	intval, _ := strconv.Atoi(token.value)
@@ -94,9 +91,19 @@ func main() {
 		kind: "intliteral",
 		intval: intval,
 	}
+	return expr
+}
 
+func generate(expr *Expr) {
 	fmt.Printf("  .global main\n")
 	fmt.Printf("main:\n")
 	fmt.Printf("  movq $%d, %%rax\n", expr.intval)
 	fmt.Printf("  ret\n")
+}
+
+func main() {
+	source, _ = ioutil.ReadFile("/dev/stdin")
+	tokens = tokenize()
+	expr := parse()
+	generate(expr)
 }
