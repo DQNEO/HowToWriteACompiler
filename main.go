@@ -77,14 +77,24 @@ func tokenize() []*Token {
 }
 
 var tokens []*Token
+var tokenIndex int = 0
 
 type Expr struct {
 	kind   string // "intliteral"
 	intval int    // for intliteral
 }
 
+func getToken() *Token {
+	if tokenIndex >= len(tokens) {
+		return nil
+	}
+	token := tokens[tokenIndex]
+	tokenIndex++
+	return token
+}
+
 func parse() *Expr {
-	token := tokens[0]
+	token := getToken()
 
 	intval, _ := strconv.Atoi(token.value)
 	expr := &Expr{
