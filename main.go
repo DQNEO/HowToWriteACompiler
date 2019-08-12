@@ -74,21 +74,27 @@ func tokenize() []*Token {
 }
 
 var bytes []byte
+
+// Node is an expression
+type Node struct {
+	Type string // "intliteral"
+	intval int
+}
+
 func main() {
-	var err error
 	bytes, _ = ioutil.ReadFile("/dev/stdin")
 	tokens := tokenize()
 
 	token := tokens[0]
-	if token.Type != "numberliteral" {
-		panic("Unexpected token: " + token.Value)
+
+	intval, _ := strconv.Atoi(token.Value)
+	node := &Node{
+		Type: "intliteral",
+		intval: intval,
 	}
-	number, err := strconv.Atoi(token.Value)
-	if err != nil {
-		panic(err)
-	}
+
 	fmt.Printf(" .global main\n")
 	fmt.Printf("main:\n")
-	fmt.Printf("  movq $%d, %%rax\n", number)
+	fmt.Printf("  movq $%d, %%rax # %s\n", node.intval, node.Type)
 	fmt.Printf("  ret\n")
 }
