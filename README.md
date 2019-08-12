@@ -78,3 +78,9 @@ Code generator converts ASTs into code of the target language.
 In this compiler, the target language is GAS(GNU Assembly) for X86-64 linux.
 
 `generateCode()` does this task.
+
+# How to run unit tests
+
+```
+$ ./test.sh
+```
