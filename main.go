@@ -8,7 +8,7 @@ import (
 )
 
 type Token struct {
-	Type string // "numberliteral"
+	Type  string // "numberliteral"
 	Value string
 }
 
@@ -37,7 +37,7 @@ func tokenize() []*Token {
 			break
 		}
 		switch char {
-		case '0','1','2','3','4','5','6','7','8','9':
+		case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
 			var number []byte = []byte{char}
 			for {
 				char, err := getchar()
@@ -52,15 +52,15 @@ func tokenize() []*Token {
 				}
 			}
 			token := &Token{
-				Type:"numberliteral",
+				Type:  "numberliteral",
 				Value: string(number),
 			}
 			tokens = append(tokens, token)
-		case ' ', '\t','\n':
+		case ' ', '\t', '\n':
 			continue
-		case ';','+','-':
+		case ';', '+', '-':
 			token := &Token{
-				Type:"punctuation",
+				Type:  "punctuation",
 				Value: string([]byte{char}),
 			}
 			tokens = append(tokens, token)
@@ -70,7 +70,6 @@ func tokenize() []*Token {
 
 	}
 
-
 	return tokens
 }
 
@@ -79,16 +78,16 @@ var tokenIndex int = 0
 
 // Node is an expression
 type Node struct {
-	Type string // "intliteral", "unary"
-	intval int
+	Type     string // "intliteral", "unary"
+	intval   int
 	operator string
-	operand *Node // for unary
-	left *Node // for binary
-	right *Node // for binary
+	operand  *Node // for unary
+	left     *Node // for binary
+	right    *Node // for binary
 }
 
 func getToken() *Token {
-	if tokenIndex >= len(tokens ) {
+	if tokenIndex >= len(tokens) {
 		return nil
 	}
 	token := tokens[tokenIndex]
@@ -107,9 +106,9 @@ func parseUnaryExpr() *Node {
 	} else if token.Type == "punctuation" {
 		operand := parseUnaryExpr()
 		return &Node{
-			Type: "unary",
-			operator:token.Value,
-			operand: operand,
+			Type:     "unary",
+			operator: token.Value,
+			operand:  operand,
 		}
 	}
 
@@ -129,14 +128,13 @@ func parseExpr() *Node {
 			left := node
 			right := parseUnaryExpr()
 			return &Node{
-				Type: "binary",
+				Type:     "binary",
 				operator: tok.Value,
-				left: left,
-				right: right,
+				left:     left,
+				right:    right,
 			}
 		}
 	}
-
 
 	return node
 }
