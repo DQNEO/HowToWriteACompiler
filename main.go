@@ -99,7 +99,7 @@ type Expr struct {
 	intval int    // for intliteral
 }
 
-func parse() *Expr {
+func parseUnaryExpr() *Expr {
 	token := getToken()
 
 	intval, _ := strconv.Atoi(token.value)
@@ -107,6 +107,11 @@ func parse() *Expr {
 		kind: "intliteral",
 		intval: intval,
 	}
+	return expr
+}
+
+func parse() *Expr {
+	expr := parseUnaryExpr()
 	return expr
 }
 
