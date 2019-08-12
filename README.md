@@ -79,6 +79,8 @@ In this compiler, the target language is GAS(GNU Assembly) for X86-64 linux.
 
 `generateCode()` does this task.
 
-# Test
+# How to run unit tests
 
-see [test.sh](test.sh)
+```
+$ ./test.sh
+```
