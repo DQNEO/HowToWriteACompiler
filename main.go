@@ -82,11 +82,7 @@ type Node struct {
 	intval int
 }
 
-
-func main() {
-	bytes, _ = ioutil.ReadFile("/dev/stdin")
-	tokens = tokenize()
-
+func parse() *Node {
 	token := tokens[0]
 
 	intval, _ := strconv.Atoi(token.Value)
@@ -94,9 +90,19 @@ func main() {
 		Type: "intliteral",
 		intval: intval,
 	}
+	return node
+}
 
+func generate(node *Node) {
 	fmt.Printf(" .global main\n")
 	fmt.Printf("main:\n")
 	fmt.Printf("  movq $%d, %%rax # %s\n", node.intval, node.Type)
 	fmt.Printf("  ret\n")
+}
+
+func main() {
+	bytes, _ = ioutil.ReadFile("/dev/stdin")
+	tokens = tokenize()
+	node := parse()
+	generate(node)
 }
