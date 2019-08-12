@@ -35,7 +35,8 @@ func tokenize() []*Token {
 		if err != nil {
 			break
 		}
-		if '0' <= char && char <= '9' {
+		switch char {
+		case '0','1','2','3','4','5','6','7','8','9':
 			var number []byte = []byte{char}
 			for {
 				char, err := getchar()
