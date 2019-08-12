@@ -58,7 +58,7 @@ func tokenize() []*Token {
 				value: string(number),
 			}
 			tokens = append(tokens, token)
-		case ';', '+', '-':
+		case ';', '+', '-', '*':
 			token := &Token{
 				kind:  "punctuation",
 				value: string([]byte{char}),
@@ -124,7 +124,7 @@ func parseExpr() *Node {
 			return node
 		}
 
-		if tok.value == "+" || tok.value == "-" {
+		if tok.value == "+" || tok.value == "-"  || tok.value == "*" {
 			left := node
 			right := parseUnaryExpr()
 			return &Node{
@@ -157,6 +157,8 @@ func generateExpression(node *Node) {
 			fmt.Printf("  addq %%rbx, %%rax\n")
 		case "-":
 			fmt.Printf("  subq %%rbx, %%rax\n")
+		case "*":
+			fmt.Printf("  imulq %%rbx, %%rax\n")
 		default:
 			panic("generator: unknown operator:" + node.operator)
 		}
