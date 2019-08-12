@@ -61,7 +61,7 @@ func tokenize() []*Token {
 			}
 		case ';', '+', '-':
 			token = &Token{
-				kind: "punct",
+				kind:  "punct",
 				value: string([]byte{char}),
 			}
 		default:
@@ -82,8 +82,10 @@ var tokenIndex int = 0
 type Expr struct {
 	kind     string // "intliteral", "unary"
 	intval   int    // for intliteral
-	operator string // "-", "+"
+	operator string // "-", "+", ...
 	operand  *Expr  // for unary expr
+	left     *Expr  // for binary expr
+	right    *Expr  // for binary expr
 }
 
 func getToken() *Token {
@@ -121,6 +123,26 @@ func parseUnaryExpr() *Expr {
 
 func parse() *Expr {
 	expr := parseUnaryExpr()
+
+	for {
+		tok := getToken()
+		if tok == nil || tok.value == ";" {
+			return expr
+		}
+
+		switch tok.value {
+		case "+", "-":
+			left := expr
+			right := parseUnaryExpr()
+			return &Expr{
+				kind:     "binary",
+				operator: tok.value,
+				left:     left,
+				right:    right,
+			}
+		}
+	}
+
 	return expr
 }
 
@@ -136,6 +158,18 @@ func generateExpr(expr *Expr) {
 			fmt.Printf("  movq $%d, %%rax\n", expr.operand.intval)
 		default:
 			panic("generator: Unknown unary operator:" + expr.operator)
+		}
+	case "binary":
+		fmt.Printf("  movq $%d, %%rax\n", expr.left.intval)
+		fmt.Printf("  movq $%d, %%rbx\n", expr.right.intval)
+
+		switch expr.operator {
+		case "+":
+			fmt.Printf("  addq %%rbx, %%rax\n")
+		case "-":
+			fmt.Printf("  subq %%rbx, %%rax\n")
+		default:
+			panic("generator: Unknown binary operator:" + expr.operator)
 		}
 	default:
 		panic("generator: Unknown expr.kind:" + expr.kind)
