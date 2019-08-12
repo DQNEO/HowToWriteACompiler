@@ -76,17 +76,25 @@ func tokenize() []*Token {
 	return tokens
 }
 
+type Expr struct {
+	kind   string // "intliteral"
+	intval int    // for intliteral
+}
+
 func main() {
-	var err error
 	source, _ = ioutil.ReadFile("/dev/stdin")
 	tokens := tokenize()
-	token0 := tokens[0]
-	number, err := strconv.Atoi(token0.value)
-	if err != nil {
-		panic(err)
+
+	token := tokens[0]
+
+	intval, _ := strconv.Atoi(token.value)
+	expr := &Expr{
+		kind: "intliteral",
+		intval: intval,
 	}
+
 	fmt.Printf("  .global main\n")
 	fmt.Printf("main:\n")
-	fmt.Printf("  movq $%d, %%rax\n", number)
+	fmt.Printf("  movq $%d, %%rax\n", expr.intval)
 	fmt.Printf("  ret\n")
 }
