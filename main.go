@@ -57,7 +57,7 @@ func tokenize() []*Token {
 			tokens = append(tokens, token)
 		case ' ', '\t','\n':
 			continue
-		case ';':
+		case ';','+','-':
 			token := &Token{
 				Type:"punctuation",
 				Value: string([]byte{char}),
@@ -79,8 +79,10 @@ var tokenIndex int = 0
 
 // Node is an expression
 type Node struct {
-	Type string // "intliteral"
+	Type string // "intliteral", "unary"
 	intval int
+	operator string
+	operand *Node
 }
 
 func getToken() *Token {
@@ -94,12 +96,22 @@ func getToken() *Token {
 
 func parseUnaryExpr() *Node {
 	token := getToken()
-	intval, _ := strconv.Atoi(token.Value)
-	node := &Node{
-		Type: "intliteral",
-		intval: intval,
+	if token.Type == "numberliteral" {
+		intval, _ := strconv.Atoi(token.Value)
+		return &Node{
+			Type:   "intliteral",
+			intval: intval,
+		}
+	} else if token.Type == "punctuation" {
+		operand := parseUnaryExpr()
+		return &Node{
+			Type: "unary",
+			operator:token.Value,
+			operand: operand,
+		}
 	}
-	return node
+
+	return nil
 }
 
 func parseExpr() *Node {
@@ -108,7 +120,15 @@ func parseExpr() *Node {
 }
 
 func generateExpression(node *Node) {
-	fmt.Printf("  movq $%d, %%rax # %s\n", node.intval, node.Type)
+	if node.Type == "intliteral" {
+		fmt.Printf("  movq $%d, %%rax # %s\n", node.intval, node.Type)
+	} else if node.Type == "unary" {
+		if node.operator == "-" {
+			fmt.Printf("  movq $-%d, %%rax # %s\n", node.operand.intval, node.operand.Type)
+		} else {
+			fmt.Printf("  movq $%d, %%rax # %s\n", node.operand.intval, node.operand.Type)
+		}
+	}
 }
 
 func generateCode(node *Node) {
