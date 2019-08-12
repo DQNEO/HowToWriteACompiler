@@ -128,6 +128,8 @@ func generateExpression(node *Node) {
 		} else {
 			fmt.Printf("  movq $%d, %%rax # %s\n", node.operand.intval, node.operand.Type)
 		}
+	} else {
+		panic("generator: unknown node type:" + node.Type)
 	}
 }
 
