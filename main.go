@@ -76,6 +76,8 @@ func tokenize() []*Token {
 	return tokens
 }
 
+var tokens []*Token
+
 type Expr struct {
 	kind   string // "intliteral"
 	intval int    // for intliteral
@@ -83,7 +85,7 @@ type Expr struct {
 
 func main() {
 	source, _ = ioutil.ReadFile("/dev/stdin")
-	tokens := tokenize()
+	tokens = tokenize()
 
 	token := tokens[0]
 
