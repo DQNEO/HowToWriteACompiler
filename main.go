@@ -100,10 +100,14 @@ func parse() *Expr {
 	return expr
 }
 
-func generate(expr *Expr) {
+func generateExpr(expr *Expr) {
+	fmt.Printf("  movq $%d, %%rax\n", expr.intval)
+}
+
+func generateCode(expr *Expr) {
 	fmt.Printf("  .global main\n")
 	fmt.Printf("main:\n")
-	fmt.Printf("  movq $%d, %%rax\n", expr.intval)
+	generateExpr(expr)
 	fmt.Printf("  ret\n")
 }
 
@@ -111,5 +115,5 @@ func main() {
 	source, _ = ioutil.ReadFile("/dev/stdin")
 	tokens = tokenize()
 	expr := parse()
-	generate(expr)
+	generateCode(expr)
 }
