@@ -30,6 +30,7 @@ func ungethar() {
 
 func tokenize() []*Token {
 	var tokens []*Token
+	fmt.Printf("# Tokens:")
 
 	for {
 		char, err := getchar()
@@ -67,10 +68,12 @@ func tokenize() []*Token {
 			panic(fmt.Sprintf("Invalid char: %c", char))
 		}
 
+		fmt.Printf(" \"%s\"", token.value)
 		tokens = append(tokens, token)
 
 	}
 
+	fmt.Printf("\n")
 	return tokens
 }
 
