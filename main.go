@@ -36,6 +36,7 @@ func tokenize() []*Token {
 		if err != nil {
 			break
 		}
+		var token *Token
 		switch char {
 		case ' ', '\t', '\n':
 			continue
@@ -53,20 +54,20 @@ func tokenize() []*Token {
 					break
 				}
 			}
-			token := &Token{
+			token = &Token{
 				kind:  "intliteral",
 				value: string(number),
 			}
-			tokens = append(tokens, token)
 		case ';', '+', '-', '*':
-			token := &Token{
+			token = &Token{
 				kind:  "punctuation",
 				value: string([]byte{char}),
 			}
-			tokens = append(tokens, token)
 		default:
 			panic(fmt.Sprintf("Invalid char: %c", char))
 		}
+
+		tokens = append(tokens, token)
 
 	}
 
