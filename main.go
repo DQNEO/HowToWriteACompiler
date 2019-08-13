@@ -30,6 +30,8 @@ func ungetChar() {
 
 func tokenize() []*Token {
 	var tokens []*Token
+	fmt.Printf("# Tokens : ")
+
 	for {
 		char, err := getChar()
 		if err != nil {
@@ -66,9 +68,11 @@ func tokenize() []*Token {
 			panic(fmt.Sprintf("tokenizer: Invalid char: '%c'", char))
 		}
 
+		fmt.Printf(" '%s'", token.value)
 		tokens = append(tokens, token)
 	}
 
+	fmt.Printf("\n")
 	return tokens
 }
 
