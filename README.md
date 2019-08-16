@@ -88,7 +88,7 @@ $ ./test.sh
 
 # SEE ALSO
 
-This project derives from My Go compiler.
+This project derives from my Go compiler.
 
 https://github.com/DQNEO/minigo
 
