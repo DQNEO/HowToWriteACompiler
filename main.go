@@ -170,16 +170,16 @@ func generateExpr(expr *Expr) {
 	}
 }
 
-func generateCode(node *Expr) {
+func generateCode(expr *Expr) {
 	fmt.Printf("  .global main\n")
 	fmt.Printf("main:\n")
-	generateExpr(node)
+	generateExpr(expr)
 	fmt.Printf("  ret\n")
 }
 
 func main() {
 	source, _ = ioutil.ReadFile("/dev/stdin")
 	tokens = tokenize()
-	node := parseExpr()
-	generateCode(node)
+	expr := parseExpr()
+	generateCode(expr)
 }
