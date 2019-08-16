@@ -61,7 +61,7 @@ func tokenize() []*Token {
 			}
 		case ';', '+', '-', '*':
 			token = &Token{
-				kind:  "punctuation",
+				kind:  "punct",
 				value: string([]byte{char}),
 			}
 		default:
@@ -106,7 +106,7 @@ func parseUnaryExpr() *Expr {
 			kind:   "intliteral",
 			intval: intval,
 		}
-	} else if token.kind == "punctuation" {
+	} else if token.kind == "punct" {
 		operand := parseUnaryExpr()
 		return &Expr{
 			kind:     "unary",
