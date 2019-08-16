@@ -130,7 +130,7 @@ func parse() *Expr {
 
 	for {
 		tok := getToken()
-		if tok == nil || tok.value == ";" {
+		if tok == nil {
 			return expr
 		}
 
