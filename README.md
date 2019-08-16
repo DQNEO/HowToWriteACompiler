@@ -1,6 +1,7 @@
 # How to write a compiler from scratch in 30 mininutes
 
 This repository explains how to write a compiler from scratch by Go.
+
 The compiler has some constraints
 
 * Can compile only arithmetic operations.
