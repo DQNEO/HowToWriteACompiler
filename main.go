@@ -134,7 +134,8 @@ func parse() *Expr {
 			return expr
 		}
 
-		if tok.value == "+" || tok.value == "-"  || tok.value == "*" {
+		switch tok.value {
+		case "+", "-", "*":
 			left := expr
 			right := parseUnaryExpr()
 			return &Expr{
