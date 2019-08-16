@@ -15,7 +15,7 @@ type Token struct {
 var source []byte
 var sourceIndex = 0
 
-func getchar() (byte, error) {
+func getChar() (byte, error) {
 	if len(source) == sourceIndex {
 		return 0, errors.New("EOF")
 	}
@@ -24,7 +24,7 @@ func getchar() (byte, error) {
 	return char, nil
 }
 
-func ungethar() {
+func ungetChar() {
 	sourceIndex--
 }
 
@@ -33,7 +33,7 @@ func tokenize() []*Token {
 	fmt.Printf("# Tokens:")
 
 	for {
-		char, err := getchar()
+		char, err := getChar()
 		if err != nil {
 			break
 		}
@@ -44,14 +44,14 @@ func tokenize() []*Token {
 		case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
 			var number []byte = []byte{char}
 			for {
-				char, err := getchar()
+				char, err := getChar()
 				if err != nil {
 					break
 				}
 				if '0' <= char && char <= '9' {
 					number = append(number, char)
 				} else {
-					ungethar()
+					ungetChar()
 					break
 				}
 			}
