@@ -16,7 +16,7 @@ var source []byte
 var sourceIndex int = 0
 
 func getChar() (byte, error) {
-	if len(source) == sourceIndex {
+	if sourceIndex == len(source) {
 		return 0, errors.New("EOF")
 	}
 	char := source[sourceIndex]
@@ -30,7 +30,7 @@ func ungetChar() {
 
 func tokenize() []*Token {
 	var tokens []*Token
-	fmt.Printf("# Tokens:")
+	fmt.Printf("# Tokens : ")
 
 	for {
 		char, err := getChar()
