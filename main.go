@@ -70,7 +70,6 @@ func tokenize() []*Token {
 
 		fmt.Printf(" '%s'", token.value)
 		tokens = append(tokens, token)
-
 	}
 
 	fmt.Printf("\n")
@@ -82,8 +81,8 @@ var tokenIndex int = 0
 
 type Expr struct {
 	kind     string // "intliteral", "unary"
-	intval   int
-	operator string
+	intval   int    // for intliteral
+	operator string // "-", "+"
 	operand  *Expr // for unary
 	left     *Expr // for binary
 	right    *Expr // for binary
