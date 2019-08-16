@@ -142,7 +142,7 @@ func parseExpr() *Expr {
 	return expr
 }
 
-func generateExpression(expr *Expr) {
+func generateExpr(expr *Expr) {
 	switch expr.kind {
 	case "intliteral":
 		fmt.Printf("  movq $%d, %%rax # %s\n", expr.intval, expr.kind)
@@ -173,7 +173,7 @@ func generateExpression(expr *Expr) {
 func generateCode(node *Expr) {
 	fmt.Printf("  .global main\n")
 	fmt.Printf("main:\n")
-	generateExpression(node)
+	generateExpr(node)
 	fmt.Printf("  ret\n")
 }
 
