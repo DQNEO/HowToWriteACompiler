@@ -113,10 +113,11 @@ func parseUnaryExpr() *Expr {
 			intval: intval,
 		}
 	} else if token.kind == "punct" {
+		operator := token.value
 		operand := parseUnaryExpr()
 		return &Expr{
 			kind:     "unary",
-			operator: token.value,
+			operator: operator,
 			operand:  operand,
 		}
 	}
