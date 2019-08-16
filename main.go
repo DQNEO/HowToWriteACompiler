@@ -104,7 +104,10 @@ func ungetToken() {
 func parseUnaryExpr() *Expr {
 	token := getToken()
 	if token.kind == "intliteral" {
-		intval, _ := strconv.Atoi(token.value)
+		intval, err := strconv.Atoi(token.value)
+		if err != nil {
+			panic(err)
+		}
 		return &Expr{
 			kind:   "intliteral",
 			intval: intval,
