@@ -83,9 +83,9 @@ type Expr struct {
 	kind     string // "intliteral", "unary"
 	intval   int    // for intliteral
 	operator string // "-", "+"
-	operand  *Expr // for unary
-	left     *Expr // for binary
-	right    *Expr // for binary
+	operand  *Expr  // for unary expr
+	left     *Expr  // for binary expr
+	right    *Expr  // for binary expr
 }
 
 func getToken() *Token {
@@ -95,6 +95,10 @@ func getToken() *Token {
 	token := tokens[tokenIndex]
 	tokenIndex++
 	return token
+}
+
+func ungetToken() {
+	tokenIndex--
 }
 
 func parseUnaryExpr() *Expr {
