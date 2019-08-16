@@ -118,7 +118,7 @@ func parseUnaryExpr() *Expr {
 	return nil
 }
 
-func parseExpr() *Expr {
+func parse() *Expr {
 	expr := parseUnaryExpr()
 
 	for {
@@ -180,6 +180,6 @@ func generateCode(expr *Expr) {
 func main() {
 	source, _ = ioutil.ReadFile("/dev/stdin")
 	tokens = tokenize()
-	expr := parseExpr()
+	expr := parse()
 	generateCode(expr)
 }
