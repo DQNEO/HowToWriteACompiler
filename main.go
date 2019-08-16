@@ -8,12 +8,12 @@ import (
 )
 
 type Token struct {
-	kind  string // "intliteral"
+	kind  string // "intliteral", "punct"
 	value string
 }
 
 var source []byte
-var sourceIndex = 0
+var sourceIndex int = 0
 
 func getChar() (byte, error) {
 	if len(source) == sourceIndex {
