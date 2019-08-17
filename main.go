@@ -65,7 +65,7 @@ func tokenize() []*Token {
 				value: string([]byte{char}),
 			}
 		default:
-			panic(fmt.Sprintf("Invalid char: '%c'", char))
+			panic(fmt.Sprintf("tokenizer: Invalid char: '%c'", char))
 		}
 
 		fmt.Printf(" '%s'", token.value)
