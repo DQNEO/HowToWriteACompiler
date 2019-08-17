@@ -153,16 +153,16 @@ func parse() *Expr {
 func generateExpr(expr *Expr) {
 	switch expr.kind {
 	case "intliteral":
-		fmt.Printf("  movq $%d, %%rax # %s\n", expr.intval, expr.kind)
+		fmt.Printf("  movq $%d, %%rax\n", expr.intval)
 	case "unary":
 		if expr.operator == "-" {
-			fmt.Printf("  movq $-%d, %%rax # %s\n", expr.operand.intval, expr.operand.kind)
+			fmt.Printf("  movq $-%d, %%rax\n", expr.operand.intval)
 		} else {
-			fmt.Printf("  movq $%d, %%rax # %s\n", expr.operand.intval, expr.operand.kind)
+			fmt.Printf("  movq $%d, %%rax\n", expr.operand.intval)
 		}
 	case "binary":
-		fmt.Printf("  movq $%d, %%rax # %s\n", expr.left.intval, expr.left.kind)
-		fmt.Printf("  movq $%d, %%rbx # %s\n", expr.right.intval, expr.right.kind)
+		fmt.Printf("  movq $%d, %%rax\n", expr.left.intval)
+		fmt.Printf("  movq $%d, %%rbx\n", expr.right.intval)
 		switch expr.operator {
 		case "+":
 			fmt.Printf("  addq %%rbx, %%rax\n")
