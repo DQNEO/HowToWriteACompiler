@@ -138,12 +138,14 @@ func parse() *Expr {
 		case "+", "-", "*":
 			left := expr
 			right := parseUnaryExpr()
-			return &Expr{
+			binop := &Expr{
 				kind:     "binary",
 				operator: tok.value,
 				left:     left,
 				right:    right,
 			}
+
+			return binop
 		}
 	}
 
