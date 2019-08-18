@@ -147,7 +147,6 @@ func parse() *Expr {
 		}
 	}
 
-	return expr
 }
 
 func generateExpr(expr *Expr) {
