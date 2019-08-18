@@ -155,14 +155,18 @@ func generateExpr(expr *Expr) {
 	case "intliteral":
 		fmt.Printf("  movq $%d, %%rax\n", expr.intval)
 	case "unary":
-		if expr.operator == "-" {
+		switch expr.operator {
+		case "-":
 			fmt.Printf("  movq $-%d, %%rax\n", expr.operand.intval)
-		} else {
+		case "+":
 			fmt.Printf("  movq $%d, %%rax\n", expr.operand.intval)
+		default:
+			panic("generator: Unknown unary operator:" + expr.operator)
 		}
 	case "binary":
 		fmt.Printf("  movq $%d, %%rax\n", expr.left.intval)
 		fmt.Printf("  movq $%d, %%rbx\n", expr.right.intval)
+
 		switch expr.operator {
 		case "+":
 			fmt.Printf("  addq %%rbx, %%rax\n")
