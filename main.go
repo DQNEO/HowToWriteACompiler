@@ -171,10 +171,10 @@ func generateExpr(expr *Expr) {
 		case "*":
 			fmt.Printf("  imulq %%rbx, %%rax\n")
 		default:
-			panic("generator: unknown operator:" + expr.operator)
+			panic("generator: Unknown operator:" + expr.operator)
 		}
 	default:
-		panic("generator: unknown expr type:" + expr.kind)
+		panic("generator: Unknown expr type:" + expr.kind)
 	}
 }
 
