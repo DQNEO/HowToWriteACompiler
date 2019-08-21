@@ -23,6 +23,10 @@ func ungetChar() {
 	sourceIndex--
 }
 
+type Token struct {
+	kind  string // "intliteral"
+	value string
+}
 
 func main() {
 	var source []byte
