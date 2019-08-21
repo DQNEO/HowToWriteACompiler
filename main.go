@@ -7,6 +7,11 @@ import (
 	"strconv"
 )
 
+type Token struct {
+	kind  string // "intliteral"
+	value string
+}
+
 var source []byte
 var sourceIndex int = 0
 
