@@ -1,10 +1,28 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"strconv"
 )
+
+var source []byte
+var sourceIndex int = 0
+
+func getChar() (byte, error) {
+	if sourceIndex == len(source) {
+		return 0, errors.New("EOF")
+	}
+	char := source[sourceIndex]
+	sourceIndex++
+	return char, nil
+}
+
+func ungetChar() {
+	sourceIndex--
+}
+
 
 func main() {
 	var source []byte
