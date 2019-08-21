@@ -8,7 +8,7 @@ import (
 )
 
 type Token struct {
-	kind  string // "intliteral"
+	kind  string // "intliteral", "punct"
 	value string
 }
 
@@ -55,6 +55,12 @@ func tokenize() []*Token {
 			token := &Token{
 				kind:  "intliteral",
 				value: string(number),
+			}
+			tokens = append(tokens, token)
+		case ';':
+			token := &Token{
+				kind: "punct",
+				value: string([]byte{char}),
 			}
 			tokens = append(tokens, token)
 		default:
