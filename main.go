@@ -1,15 +1,33 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"strconv"
 )
 
+var source []byte
+var sourceIndex int = 0
+
+func getChar() (byte, error) {
+	if sourceIndex == len(source) {
+		return 0, errors.New("EOF")
+	}
+	char := source[sourceIndex]
+	sourceIndex++
+	return char, nil
+}
+
+func ungetChar() {
+	sourceIndex--
+}
+
+
 func main() {
 	var err error
-	bytes, _ := ioutil.ReadFile("/dev/stdin")
-	var input string = string(bytes)
+	source, _ := ioutil.ReadFile("/dev/stdin")
+	var input string = string(source)
 
 	number, err := strconv.Atoi(input)
 	if err != nil {
