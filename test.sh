@@ -23,3 +23,5 @@ unit_test ' 7 ;' '7'
 unit_test '-1' '255'
 unit_test '30+12' '42'
 unit_test '6 * 7' '42'
+unit_test '42 / 2' '21'
+
