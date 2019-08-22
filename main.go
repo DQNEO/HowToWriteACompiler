@@ -59,7 +59,7 @@ func tokenize() []*Token {
 				kind:  "intliteral",
 				value: string(number),
 			}
-		case ';', '+', '-', '*':
+		case ';', '+', '-', '*', '/':
 			token = &Token{
 				kind:  "punct",
 				value: string([]byte{char}),
@@ -131,7 +131,7 @@ func parse() *Expr {
 		}
 
 		switch tok.value {
-		case "+", "-", "*":
+		case "+", "-", "*", "/":
 			left := expr
 			right := parseUnaryExpr()
 			return &Expr{
@@ -170,6 +170,9 @@ func generateExpr(expr *Expr) {
 			fmt.Printf("  subq %%rbx, %%rax\n")
 		case "*":
 			fmt.Printf("  imulq %%rbx, %%rax\n")
+		case "/":
+			fmt.Printf("  movq $0, %%rdx\n")
+			fmt.Printf("  div %%rbx\n")
 		default:
 			panic("generator: Unknown binary operator:" + expr.operator)
 		}
