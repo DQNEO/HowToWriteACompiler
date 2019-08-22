@@ -64,9 +64,10 @@ func tokenize() []*Token {
 				kind:  "intliteral",
 				value: intliteral,
 			}
+
 			tokens = append(tokens, token)
 			fmt.Printf(" '%s'", token.value)
-		case ';':
+		case ';', '+', '-':
 			token := &Token{
 				kind: "punct",
 				value: string([]byte{char}),
@@ -95,19 +96,35 @@ func getToken() *Token {
 }
 
 type Expr struct {
-	kind   string // "intliteral"
-	intval int    // for intliteral
+	kind     string // "intliteral", "unary"
+	intval   int    // for intliteral
+	operator string // "-", "+"
+	operand  *Expr  // for unary expr
 }
 
 func parseUnaryExpr() *Expr {
 	token := getToken()
-
-	intval, _ := strconv.Atoi(token.value)
-	expr := &Expr{
-		kind: "intliteral",
-		intval: intval,
+	switch token.kind {
+	case "intliteral":
+		intval, err := strconv.Atoi(token.value)
+		if err != nil {
+			panic(err)
+		}
+		return &Expr{
+			kind:   "intliteral",
+			intval: intval,
+		}
+	case "punct":
+		operator := token.value
+		operand := parseUnaryExpr()
+		return &Expr{
+			kind:     "unary",
+			operator: operator,
+			operand:  operand,
+		}
+	default:
+		return nil
 	}
-	return expr
 }
 
 func parse() *Expr {
@@ -116,7 +133,21 @@ func parse() *Expr {
 }
 
 func generateExpr(expr *Expr) {
-	fmt.Printf("  movq $%d, %%rax\n", expr.intval)
+	switch expr.kind {
+	case "intliteral":
+		fmt.Printf("  movq $%d, %%rax\n", expr.intval)
+	case "unary":
+		switch expr.operator {
+		case "-":
+			fmt.Printf("  movq $-%d, %%rax\n", expr.operand.intval)
+		case "+":
+			fmt.Printf("  movq $%d, %%rax\n", expr.operand.intval)
+		default:
+			panic("generator: Unknown unary operator:" + expr.operator)
+		}
+	default:
+		panic("generator: Unknown expr.kind:" + expr.kind)
+	}
 }
 
 func generateCode(expr *Expr) {
