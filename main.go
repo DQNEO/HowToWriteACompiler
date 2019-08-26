@@ -124,7 +124,7 @@ func parseUnaryExpr() *Expr {
 			operand:  operand,
 		}
 	default:
-		return nil
+		panic("Unexpected token")
 	}
 }
 
