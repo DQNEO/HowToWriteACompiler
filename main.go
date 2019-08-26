@@ -148,7 +148,7 @@ func parse() *Expr {
 				right:    right,
 			}
 		default:
-			return expr
+			panic("unexpected token:" + token.value)
 		}
 	}
 }
