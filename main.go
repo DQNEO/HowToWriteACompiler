@@ -116,12 +116,10 @@ func parseUnaryExpr() *Expr {
 			intval: intval,
 		}
 	case "punct":
-		operator := token.value
-		operand := parseUnaryExpr()
 		return &Expr{
 			kind:     "unary",
-			operator: operator,
-			operand:  operand,
+			operator: token.value,
+			operand:  parseUnaryExpr(),
 		}
 	default:
 		panic("Unexpected token")
@@ -139,13 +137,11 @@ func parse() *Expr {
 
 		switch token.value {
 		case "+", "-", "*", "/":
-			left := expr
-			right := parseUnaryExpr()
 			return &Expr{
 				kind:     "binary",
 				operator: token.value,
-				left:     left,
-				right:    right,
+				left:     expr,
+				right:    parseUnaryExpr(),
 			}
 		default:
 			panic("unexpected token:" + token.value)
